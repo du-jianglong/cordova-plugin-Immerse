@@ -68,6 +68,9 @@ public class SystemBarTintManager {
             if (!sIsMiuiV6) {
                 sIsMiuiV6 = "V7".equals(miuiVer);
             }
+            if (!sIsMiuiV6) {
+                sIsMiuiV6 = "V8".equals(miuiVer);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
