@@ -141,6 +141,10 @@ public class SystemBarTintManager {
         }
     }
 
+    public boolean isMiui() {
+      return sIsMiuiV6;
+    }
+
     /**
      * set status bar darkmode
      * @param darkmode

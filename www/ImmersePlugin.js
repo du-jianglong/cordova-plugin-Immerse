@@ -6,6 +6,9 @@ var ImmersePlugin = {
   },
   setDarkMode: function (ok) {
     exec(null, null, "ImmersePlugin", "setDarkMode", [ok]);
+  },
+  isMiui: function (successCallback) {
+    exec(successCallback, null, "ImmersePlugin", "isMiui", []);
   }
 };
 

@@ -17,6 +17,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaArgs;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -85,6 +86,22 @@ public class ImmersePlugin extends CordovaPlugin {
         public void run() {
           try {
             tintManager.setStatusBarDarkMode(args.getBoolean(0), activity);
+          } catch (JSONException ex) {
+            Log.e(ImmersePlugin.class.getSimpleName(), "unexpected error", ex);
+          }
+        }
+      });
+      return true;
+    }
+
+    if ("isMiui".equals(action)) {
+      activity.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          try {
+            JSONObject r = new JSONObject();
+            r.put("isMiui", tintManager.isMiui());
+            callbackContext.success(r);
           } catch (JSONException ex) {
             Log.e(ImmersePlugin.class.getSimpleName(), "unexpected error", ex);
           }
