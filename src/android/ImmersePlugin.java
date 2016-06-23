@@ -49,6 +49,9 @@ public class ImmersePlugin extends CordovaPlugin {
       final Activity activity = cordova.getActivity();
       final Window window = activity.getWindow();
       setTranslucentStatus(window, true);
+      
+      int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE	| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+			window.getDecorView().setSystemUiVisibility(uiOptions);
 
       tintManager = new SystemBarTintManager(activity);
       tintManager.setStatusBarTintEnabled(true);
