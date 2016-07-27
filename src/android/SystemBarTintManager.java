@@ -119,10 +119,13 @@ public class SystemBarTintManager {
     if (mNavBarAvailable) {
       setupNavBarView(activity, decorViewGroup);
     }
-
   }
 
-  private static boolean flymeSetStatusBarLightMode(Window window, boolean dark) {
+  public int getStatusbarHeight() {
+    return Math.round(mConfig.getStatusBarHeight() / mConfig.getDensity());
+  }
+
+  private boolean flymeSetStatusBarLightMode(Window window, boolean dark) {
     boolean result = false;
     if (window != null) {
       try {
@@ -425,11 +428,13 @@ public class SystemBarTintManager {
     private final int mNavigationBarWidth;
     private final boolean mInPortrait;
     private final float mSmallestWidthDp;
+    private final DisplayMetrics mMetrics;
 
     private SystemBarConfig(Activity activity, boolean translucentStatusBar, boolean traslucentNavBar) {
       Resources res = activity.getResources();
       mInPortrait = (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
-      mSmallestWidthDp = getSmallestWidthDp(activity);
+      mMetrics = getMetrics(activity);
+      mSmallestWidthDp = getSmallestWidthDp();
       mStatusBarHeight = getInternalDimensionSize(res, STATUS_BAR_HEIGHT_RES_NAME);
       mActionBarHeight = getActionBarHeight(activity);
       mNavigationBarHeight = getNavigationBarHeight(activity);
@@ -490,7 +495,7 @@ public class SystemBarTintManager {
     }
 
     @SuppressLint("NewApi")
-    private float getSmallestWidthDp(Activity activity) {
+    private DisplayMetrics getMetrics(Activity activity) {
       DisplayMetrics metrics = new DisplayMetrics();
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
         activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
@@ -498,8 +503,12 @@ public class SystemBarTintManager {
         // TODO this is not correct, but we don't really care pre-kitkat
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
       }
-      float widthDp = metrics.widthPixels / metrics.density;
-      float heightDp = metrics.heightPixels / metrics.density;
+      return metrics;
+    }
+
+    private float getSmallestWidthDp() {
+      float widthDp = mMetrics.widthPixels / mMetrics.density;
+      float heightDp = mMetrics.heightPixels / mMetrics.density;
       return Math.min(widthDp, heightDp);
     }
 
@@ -521,6 +530,10 @@ public class SystemBarTintManager {
      */
     public int getStatusBarHeight() {
       return mStatusBarHeight;
+    }
+
+    public float getDensity() {
+      return mMetrics.density;
     }
 
     /**
@@ -596,8 +609,6 @@ public class SystemBarTintManager {
         return 0;
       }
     }
-
   }
-
 }
 
