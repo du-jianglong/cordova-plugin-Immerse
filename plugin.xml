@@ -24,5 +24,6 @@
     </config-file>
     <source-file src="src/android/SystemBarTintManager.java" target-dir="src/com/readystatesoftware/systembartint"/>
     <source-file src="src/android/ImmersePlugin.java" target-dir="src/com/whcyit/cordova/plugin"/>
+    <framework src="src/android/immerse.gradle" custom="true" type="gradleReference"/>
   </platform>
 </plugin>

@@ -11,6 +11,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 import org.apache.cordova.*;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.support.v4.view.ViewCompat;
 
 public class ImmersePlugin extends CordovaPlugin {
   private SystemBarTintManager tintManager;
@@ -75,13 +76,24 @@ public class ImmersePlugin extends CordovaPlugin {
   }
 
   private void setTranslucentStatus(Window win) {
+    ViewGroup mContentView = (ViewGroup) activity.findViewById(Window.ID_ANDROID_CONTENT);
+    View mContentChild = mContentView.getChildAt(0);
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+      win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      win.setStatusBarColor(Color.TRANSPARENT);
       win.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
           | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-      win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-      win.setStatusBarColor(Color.TRANSPARENT);
-      return;
+      if (mContentChild != null) {
+        ViewCompat.setFitsSystemWindows(mContentChild, false);
+        ViewCompat.requestApplyInsets(mChildView);
+      }
+    } else {
+      win.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      if (mContentChild != null) {
+        ViewCompat.setFitsSystemWindows(mContentChild, false);
+      }
     }
-    win.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
   }
 }
