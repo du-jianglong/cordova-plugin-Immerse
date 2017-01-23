@@ -1,4 +1,4 @@
-package com.whcyit.cordova.plugin;
+package org.apache.cordova.immerse;
 
 import android.app.Activity;
 import android.graphics.Color;
