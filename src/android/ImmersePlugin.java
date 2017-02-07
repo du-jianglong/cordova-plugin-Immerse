@@ -40,10 +40,6 @@ public class ImmersePlugin extends CordovaPlugin {
 
   @Override
   public boolean execute(final String action, final CordovaArgs args, final CallbackContext callbackContext) throws JSONException {
-    if (isHuaWei()) {
-      return false;
-    }
-
     if (tintManager == null) {
       return false;
     }
@@ -85,7 +81,7 @@ public class ImmersePlugin extends CordovaPlugin {
   }
 
   private boolean isHuaWei() {
-    return android.os.Build.MANUFACTURER == "HUAWEI";
+    return "HUAWEI".equals(android.os.Build.MANUFACTURER);
   }
 
   private void setTranslucentStatus(Window win) {
