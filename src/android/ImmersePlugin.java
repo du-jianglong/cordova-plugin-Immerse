@@ -24,6 +24,10 @@ public class ImmersePlugin extends CordovaPlugin {
   public void initialize(final CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
 
+    if (isHuaWei()) {
+      return;
+    }
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       final Activity activity = cordova.getActivity();
       final Window window = activity.getWindow();
@@ -36,11 +40,15 @@ public class ImmersePlugin extends CordovaPlugin {
 
   @Override
   public boolean execute(final String action, final CordovaArgs args, final CallbackContext callbackContext) throws JSONException {
-    final Activity activity = this.cordova.getActivity();
+    if (isHuaWei()) {
+      return false;
+    }
 
     if (tintManager == null) {
       return false;
     }
+
+    final Activity activity = this.cordova.getActivity();
 
     if ("setDarkMode".equals(action)) {
       activity.runOnUiThread(new Runnable() {
@@ -74,6 +82,10 @@ public class ImmersePlugin extends CordovaPlugin {
     }
 
     return false;
+  }
+
+  private boolean isHuaWei() {
+    return android.os.Build.MANUFACTURER == "HUAWEI";
   }
 
   private void setTranslucentStatus(Window win) {
