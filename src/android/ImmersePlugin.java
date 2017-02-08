@@ -24,7 +24,7 @@ public class ImmersePlugin extends CordovaPlugin {
   public void initialize(final CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
 
-    if (isHuaWei()) {
+    if (SystemBarTintManager.isEmui()) {
       return;
     }
 
@@ -78,10 +78,6 @@ public class ImmersePlugin extends CordovaPlugin {
     }
 
     return false;
-  }
-
-  private boolean isHuaWei() {
-    return "HUAWEI".equals(android.os.Build.MANUFACTURER);
   }
 
   private void setTranslucentStatus(Window win) {

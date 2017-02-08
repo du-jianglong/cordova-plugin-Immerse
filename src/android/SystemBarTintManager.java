@@ -44,22 +44,20 @@ public class SystemBarTintManager {
    */
   public static final int DEFAULT_TINT_COLOR = 0x99000000;
   private static boolean sIsMiuiV6;
+  private static boolean isEmui;
 
   static {
-    try {
-      Class<?> sysClass = Class.forName("android.os.SystemProperties");
-      Method getStringMethod = sysClass.getDeclaredMethod("get", String.class);
-      String miuiVer = (String) getStringMethod.invoke(sysClass, "ro.miui.ui.version.name");
-      sIsMiuiV6 = "V6".equals(miuiVer);
-      if (!sIsMiuiV6) {
-        sIsMiuiV6 = "V7".equals(miuiVer);
-      }
-      if (!sIsMiuiV6) {
-        sIsMiuiV6 = "V8".equals(miuiVer);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
+    String miuiVer = getSystemProperty("ro.miui.ui.version.name");
+    sIsMiuiV6 = "V6".equals(miuiVer);
+    if (!sIsMiuiV6) {
+      sIsMiuiV6 = "V7".equals(miuiVer);
     }
+    if (!sIsMiuiV6) {
+      sIsMiuiV6 = "V8".equals(miuiVer);
+    }
+
+    String emui = getSystemProperty("ro.build.version.emui");
+    isEmui = emui != null && !"".equals(emui);
   }
 
   private final SystemBarConfig mConfig;
@@ -70,6 +68,26 @@ public class SystemBarTintManager {
   private View mStatusBarTintView;
   private View mNavBarTintView;
 
+  public static String getSystemProperty(String key) {
+    String value = "unknown";
+    try {
+      Class<?> c = Class.forName("android.os.SystemProperties");
+      Method get = c.getDeclaredMethod("get", String.class);
+      value = (String) get.invoke(c, key);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return value;
+  }
+
+  public static boolean isMiui() {
+    return sIsMiuiV6;
+  }
+
+  public static boolean isEmui() {
+    return isEmui;
+  }
+
   /**
    * Constructor. Call this in the host activity onCreate method after its
    * content view has been set. You should always create new instances when
@@ -79,7 +97,6 @@ public class SystemBarTintManager {
    */
   @TargetApi(19)
   public SystemBarTintManager(Activity activity) {
-
     Window win = activity.getWindow();
     ViewGroup decorViewGroup = (ViewGroup) win.getDecorView();
 
@@ -150,10 +167,6 @@ public class SystemBarTintManager {
       }
     }
     return result;
-  }
-
-  public boolean isMiui() {
-    return sIsMiuiV6;
   }
 
   /**
