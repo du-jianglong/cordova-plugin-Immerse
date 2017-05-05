@@ -1,0 +1,21 @@
+{
+  "name": "cordova-plugin-Immerse",
+  "version": "1.0.1",
+  "description": "android 沉浸状态栏",
+  "cordova": {
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/squallliu/cordova-plugin-Immerse"
+  },
+  "keywords": [
+    "cordova",
+    "immerse",
+    "cordova-android"
+  ],
+  "author": "squall liu",
+  "license": "MIT"
+}
