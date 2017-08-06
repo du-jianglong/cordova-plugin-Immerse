@@ -23,6 +23,14 @@ public class ImmersePlugin extends CordovaPlugin {
   }
 
   @Override
+  public void onDestroy() {
+    if (immersionBar == null) {
+      return;
+    }
+    immersionBar.destroy();
+  }
+
+  @Override
   public boolean execute(final String action, final CordovaArgs args, final CallbackContext callbackContext) throws JSONException {
     if (immersionBar == null) {
       return false;
