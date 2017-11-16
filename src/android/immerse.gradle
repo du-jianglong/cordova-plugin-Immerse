@@ -16,14 +16,3 @@ repositories{
 dependencies {
     compile 'com.gyf.barlibrary:barlibrary:2.3.0'
 }
-
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == 'com.android.support') {
-            if (!requested.name.startsWith("multidex")) {
-                details.useVersion '25.3.0'
-            }
-        }
-    }
-}
